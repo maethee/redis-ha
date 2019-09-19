@@ -44,9 +44,6 @@ objects:
               value: "true"
             - name: REDIS_DATA_MAX_AGE
               value: ${REDIS_DATA_MAX_AGE}
-          volumeMounts:
-            - mountPath: /var/lib/redis/data
-              name: data
           ports:
             - containerPort: 6379
           resources: {}
@@ -63,10 +60,7 @@ objects:
         restartPolicy: Always
         securityContext: {}
         terminationGracePeriodSeconds: 30
-        volumes:
-          - name: data
-            persistentVolumeClaim:
-              claimName: ${REDIS_PV}
+      
     test: false
     triggers:
     - type: ConfigChange
@@ -114,9 +108,6 @@ parameters:
   required: true
 - name: REDIS_IMAGE
   description: Location and name of the Redis Sentinel image.
-  required: true
-- name: REDIS_PV
-  description: Name of the Redis PV to bind.
   required: true
 - name: REDIS_DATA_MAX_AGE
   description: Maximal age of slave data directories in days.
